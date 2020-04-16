@@ -24,7 +24,6 @@ var connections []*Conn
 func main() {
 	app := fiber.New()
 	app.Get("/", func(c *fiber.Ctx) {
-		// c.Accepts("text/html")
 		data := make(map[string]interface{})
 		c.Render("./view/index2.html", data)
 	})
@@ -76,17 +75,10 @@ func handleConnection(currentConnection *Conn) {
 			jsonMessage, _ := json.Marshal(a.Username + " leave the chat")
 			broardcast(currentConnection, mt, jsonMessage)
 		}
-		// log.Printf("recv: %s", msg)
-		// err = currentConnection.WriteMessage(mt, msg)
-		// if err != nil {
-		// 	log.Println("write:", err)
-		// 	break
-		// }
 	}
 }
 
 func broardcast(currentConnection *Conn, messageType int, message []byte) {
-	// fmt.Println(connections)
 	connects := connections
 	for _, v := range connects {
 		if v == currentConnection {
