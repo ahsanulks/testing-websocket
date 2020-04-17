@@ -25,7 +25,7 @@ func main() {
 	app := fiber.New()
 	app.Get("/", func(c *fiber.Ctx) {
 		data := make(map[string]interface{})
-		c.Render("./view/index2.html", data)
+		c.Render("./view/index.html", data)
 	})
 
 	app.Get("/ws", websocket.New(func(c *websocket.Conn) {

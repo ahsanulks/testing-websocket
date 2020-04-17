@@ -64,52 +64,52 @@ app.init = function () {
 
     app.container = document.querySelector('.container')
 
-    app.ws = new WebSocket("ws://localhost:3000/ws?username=" + name)
+    app.ws = new WebSocket("ws://localhost:3000/ws")
 
     app.ws.onopen = function() {
-     var message = '<b>me</b>: connected'
-     app.print(message)
-     app.ws.send(JSON.stringify({
+        var message = '<b>me</b>: connected'
+        app.print(message)
+        app.ws.send(JSON.stringify({
         Type: "new",
         Username: name
-     }));
+        }));
     }
 
- app.ws.onmessage = function (event) {
-     var res = JSON.parse(event.data)
-     var messsage = ''
-     if (res.Type === 'New') {
-         message = 'User <b>' + res.Username + '</b>: connected'
-     } else if (res.Type === 'Leave') {
-         message = 'User <b>' + res.Username + '</b>: disconnected'
-     } else {
-         message = '<b>' + res.Username + '</b>: ' + res.Message
-     }
+    app.ws.onmessage = function (event) {
+        var res = JSON.parse(event.data)
+        var messsage = ''
+        if (res.Type === 'New') {
+            message = 'User <b>' + res.Username + '</b>: connected'
+        } else if (res.Type === 'Leave') {
+            message = 'User <b>' + res.Username + '</b>: disconnected'
+        } else {
+            message = '<b>' + res.Username + '</b>: ' + res.Message
+        }
 
-     app.print(message)
- }
- app.print = function (message) {
-    var el = document.createElement("p")
-    el.innerHTML = message
-    app.container.append(el)
-}
- app.ws.onclose = function () {
-     var message = '<b>me</b>: disconnected'
-     app.print(message)
- }
- app.doSendMessage = function () {
-    var messageRaw = document.querySelector('.input-message').value
-    app.ws.send(JSON.stringify({
-        Username: name,
-        Message: messageRaw,
-        Type: "message"
-    }));
+        app.print(message)
+    }
+    app.print = function (message) {
+        var el = document.createElement("p")
+        el.innerHTML = message
+        app.container.append(el)
+    }
+    app.ws.onclose = function () {
+        var message = '<b>me</b>: disconnected'
+        app.print(message)
+    }
+    app.doSendMessage = function () {
+        var messageRaw = document.querySelector('.input-message').value
+        app.ws.send(JSON.stringify({
+            Username: name,
+            Message: messageRaw,
+            Type: "message"
+        }));
 
-    var message = '<b>me</b>: ' + messageRaw
-    app.print(message)
+        var message = '<b>me</b>: ' + messageRaw
+        app.print(message)
 
-    document.querySelector('.input-message').value = ''
-}
+        document.querySelector('.input-message').value = ''
+    }
 }
 
 window.onload = app.init
